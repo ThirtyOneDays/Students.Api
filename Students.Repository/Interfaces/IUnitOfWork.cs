@@ -8,7 +8,7 @@ namespace Students.Repository.Interfaces
   public interface IUnitOfWork : IDisposable
   {
     IGenericRepository<DbStudent> StudentRepository { get; }
-    //IGenericRepository<DbGroup> GroupRepository { get; }
+    IGenericRepository<DbGroup> GroupRepository { get; }
     Task SaveAsync();
   }
 }

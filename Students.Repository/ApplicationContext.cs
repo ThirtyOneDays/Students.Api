@@ -8,14 +8,17 @@ namespace Students.Repository
     public DbSet<DbStudent> Students { get; set; }
     public DbSet<DbGroup> Groups { get; set; }
 
-    public ApplicationContext()
+    private readonly string _connectionString;
+
+    public ApplicationContext(DbConnectionSettings connectionStringSettings)
     {
+      _connectionString = connectionStringSettings.ConnectionString;
       Database.EnsureCreated();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-      optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=studentsdb;Trusted_Connection=True;");
+      optionsBuilder.UseSqlServer(_connectionString);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,9 +30,13 @@ namespace Students.Repository
       modelBuilder.Entity<DbStudent>().Property(s => s.Patronymic);
       modelBuilder.Entity<DbStudent>().HasIndex(s => s.UId).IsUnique();
       modelBuilder.Entity<DbStudent>().Property(s => s.Gender).IsRequired();
+      modelBuilder.Entity<DbStudent>()
+        .HasMany(s => s.Group)
+        .WithMany(c => c.Student)
+        .UsingEntity(j => j.ToTable("StudentGroups"));
 
       modelBuilder.Entity<DbGroup>().HasKey(s => s.Id);
-      modelBuilder.Entity<DbGroup>().Property(s => s.Name).IsRequired();
+      modelBuilder.Entity<DbGroup>().HasIndex(s => s.Name).IsUnique();
     }
   }
 }

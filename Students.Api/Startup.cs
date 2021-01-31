@@ -3,16 +3,25 @@ using Autofac;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Students.Api.Middlewares;
 using Students.Logic.Services.Students;
 
 namespace Students.Api
 {
   public class Startup
   {
+    private readonly IConfiguration _configuration;
+
+    public Startup(IConfiguration configuration)
+    {
+      _configuration = configuration;
+    }
+
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddMvcCore(opt => opt.EnableEndpointRouting = false);
@@ -38,10 +47,11 @@ namespace Students.Api
         app.UseDeveloperExceptionPage();
       }
 
+      app.UseMiddleware<ErrorHandlingMiddleware>();
       app.UseSwagger();
       app.UseSwaggerUI(c =>
       {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Students Api V1");
       });
       app.UseRouting();
       app.UseEndpoints(endpoints =>
@@ -53,7 +63,7 @@ namespace Students.Api
 
     public void ConfigureContainer(ContainerBuilder builder)
     {
-      builder.RegisterModule(new AutofacModule());
+      builder.RegisterModule(new AutofacModule(_configuration));
     }
   }
 }

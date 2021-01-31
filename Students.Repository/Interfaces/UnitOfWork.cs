@@ -11,18 +11,18 @@ namespace Students.Repository.Interfaces
 
     public UnitOfWork(
       ApplicationContext context, 
-      IGenericRepository<DbStudent> studentRepository
-      //IGenericRepository<DbGroup> groupRepository
+      IGenericRepository<DbStudent> studentRepository,
+      IGenericRepository<DbGroup> groupRepository
       )
     {
       _context = context;
       StudentRepository = studentRepository;
-      //GroupRepository = groupRepository;
+      GroupRepository = groupRepository;
     }
 
     public IGenericRepository<DbStudent> StudentRepository { get; }
 
-    //public IGenericRepository<DbGroup> GroupRepository { get; }
+    public IGenericRepository<DbGroup> GroupRepository { get; }
 
     public async Task SaveAsync()
     {

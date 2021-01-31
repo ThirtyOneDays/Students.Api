@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using AutoMapper;
-using Students.Logic.Models.Groups;
 using Students.Logic.Models.Students;
 using Students.Repository.Entities;
 
@@ -34,11 +33,6 @@ namespace Students.Logic.Services.Students
         .ForMember(dest => dest.Patronymic, opt => opt.MapFrom(src => src.Patronymic))
         .ForMember(dest => dest.UId, opt => opt.MapFrom(src => src.UId))
         .ForMember(dest => dest.Groups, opt => opt.MapFrom(src => string.Join(", ", src.Group.Select(s => s.Name))));
-
-      CreateMap<Group, DbGroup>()
-        .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-        .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-        .ReverseMap();
     }
   }
 }

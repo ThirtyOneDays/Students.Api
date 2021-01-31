@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Students.Common.Models.UI;
@@ -43,7 +44,20 @@ namespace Students.Repository.Repositories
       return await _dbSet.FindAsync(id);
     }
 
-    public async Task<IEnumerable<TEntity>> GetAsync(PagingModel pagingModel, string includeProperties = "")
+    public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate,  string includeProperties = "")
+    {
+      IQueryable<TEntity> query = _dbSet;
+
+      query = includeProperties
+        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+        .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+
+      var a = await query.FirstOrDefaultAsync(predicate);
+
+      return await query.FirstOrDefaultAsync(predicate);
+    }
+
+    public async Task<IEnumerable<TEntity>> GetListAsync(PagingModel pagingModel, string includeProperties = "")
     {
       IQueryable<TEntity> query = _dbSet;
 

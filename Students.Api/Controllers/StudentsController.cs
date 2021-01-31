@@ -22,7 +22,7 @@ namespace Students.Api.Controllers
     //[Authorize]
     public async Task<IActionResult> CreateStudent(CreateStudentRequest student)
     {
-      await _studentsService.CreateStudent(student);
+      await _studentsService.CreateStudentAsync(student);
       return NoContent();
     }
 
@@ -30,7 +30,7 @@ namespace Students.Api.Controllers
     //[Authorize]
     public async Task<IActionResult> UpdateStudent(UpdateStudentRequest student)
     {
-      await _studentsService.UpdateStudent(student);
+      await _studentsService.UpdateStudentAsync(student);
       return NoContent();
     }
 
@@ -38,7 +38,7 @@ namespace Students.Api.Controllers
     //[Authorize]
     public async Task<IActionResult> DeleteStudent(long studentId)
     {
-      await _studentsService.DeleteStudent(studentId);
+      await _studentsService.DeleteStudentAsync(studentId);
       return NoContent();
     }
 
@@ -47,17 +47,33 @@ namespace Students.Api.Controllers
     [ProducesResponseType(typeof(StudentModel), 200)]
     public async Task<IActionResult> GetStudent(long studentId)
     {
-      var student = await _studentsService.GetStudent(studentId);
+      var student = await _studentsService.GetStudentAsync(studentId);
       return Ok(student);
     }
 
-    [HttpPost("get")]
+    [HttpPost("list")]
     //[Authorize]
     [ProducesResponseType(typeof(List<StudentModel>), 200)]
     public async Task<IActionResult> GetStudents(PagingModel pagingModel)
     {
-      var students = await _studentsService.GetStudents(pagingModel);
+      var students = await _studentsService.GetStudentsAsync(pagingModel);
       return Ok(students);
+    }
+
+    [HttpPost("groups")]
+    //[Authorize]
+    public async Task<IActionResult> AddStudentToGroup(StudentGroupModel studentGroupModel)
+    {
+      await _studentsService.AddStudentToGroupAsync(studentGroupModel);
+      return NoContent();
+    }
+
+    [HttpDelete("groups")]
+    //[Authorize]
+    public async Task<IActionResult> RemoveStudentFromGroup(StudentGroupModel studentGroupModel)
+    {
+      await _studentsService.RemoveStudentFromGroupAsync(studentGroupModel);
+      return NoContent();
     }
   }
 }
