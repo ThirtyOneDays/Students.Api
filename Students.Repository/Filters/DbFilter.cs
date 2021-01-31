@@ -7,6 +7,9 @@ namespace Students.Repository.Filters
   {
     private readonly IDbFilterAdapter<T> _adapter;
 
+    private const int DefaultFrom = 0;
+    private const int DefaultTo = 20;
+
     public DbFilter(IDbFilterAdapter<T> adapter)
     {
       _adapter = adapter;
@@ -18,16 +21,22 @@ namespace Students.Repository.Filters
       {
         if (filter.Condition == FilterType.EqualsTo)
         {
-          values = (IQueryable<T>) _adapter.FilterEqualsTo(values, filter);
+          values = _adapter.FilterEqualsTo(values, filter);
         }
       }
 
-      if (pagingModel.Paging.From >= 0 && pagingModel.Paging.To > 0)
+      if (pagingModel.Paging.From < 0)
       {
-        values = values
-          .Skip(pagingModel.Paging.From)
-          .Take(pagingModel.Paging.To);
+        pagingModel.Paging.From = DefaultFrom;
       }
+      if (pagingModel.Paging.To <= 0)
+      {
+        pagingModel.Paging.To = DefaultTo;
+      }
+
+      values = values
+        .Skip(pagingModel.Paging.From)
+        .Take(pagingModel.Paging.To);
 
       return values;
     }

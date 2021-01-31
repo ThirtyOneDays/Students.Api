@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using Students.Common.Models.UI;
-using Students.Repository.Entities;
 
 namespace Students.Repository.Filters
 {
-  public interface IDbFilterAdapter<in T>
+  public interface IDbFilterAdapter<T>
   {
-    IQueryable<DbStudent> FilterEqualsTo(IQueryable<T> dbStudents, Filter filter);
+    IQueryable<T> FilterEqualsTo(IQueryable<T> values, Filter filter);
   }
 }

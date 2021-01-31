@@ -7,9 +7,10 @@ namespace Students.Logic.Services.Students
 {
   public interface IStudentsService
   {
-    Task CreateStudent(Student student);
+    Task CreateStudent(CreateStudentRequest student);
     Task DeleteStudent(long studentId);
-    Task UpdateStudent(Student student);
-    Task<List<Student>> GetStudents(PagingModel pagingModel);
+    Task UpdateStudent(UpdateStudentRequest student);
+    Task<StudentModel> GetStudent(long studentId);
+    Task<List<StudentModel>> GetStudents(PagingModel pagingModel);
   }
 }

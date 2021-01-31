@@ -6,7 +6,10 @@ namespace Students.Repository.Repositories
 {
   public interface IGenericRepository<TEntity>
   {
-    Task Create(TEntity item);
+    Task CreateAsync(TEntity item);
+    Task UpdateAsync(TEntity item);
+    Task RemoveAsync(TEntity item);
+    Task<TEntity> FindByIdAsync(long id);
     Task<IEnumerable<TEntity>> GetAsync(
       PagingModel pagingModel,
       string includeProperties = "");

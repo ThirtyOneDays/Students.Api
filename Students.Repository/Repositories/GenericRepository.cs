@@ -21,10 +21,26 @@ namespace Students.Repository.Repositories
       _dbFilter = dbFilter;
     }
 
-    public async Task Create(TEntity item)
+    public async Task CreateAsync(TEntity item)
     {
       await _dbSet.AddAsync(item);
       await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(TEntity item)
+    {
+      _context.Entry(item).State = EntityState.Modified;
+      await _context.SaveChangesAsync();
+    }
+    public async Task RemoveAsync(TEntity item)
+    {
+      _dbSet.Remove(item);
+      await _context.SaveChangesAsync();
+    }
+
+    public async Task<TEntity> FindByIdAsync(long id)
+    {
+      return await _dbSet.FindAsync(id);
     }
 
     public async Task<IEnumerable<TEntity>> GetAsync(PagingModel pagingModel, string includeProperties = "")
@@ -36,9 +52,12 @@ namespace Students.Repository.Repositories
         query = _dbFilter.Filter(pagingModel, query);
       }
 
-      query = includeProperties
-        .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
-        .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+      if (query.Any())
+      {
+        query = includeProperties
+          .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
+          .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+      }
 
       return await query.ToListAsync();
     }

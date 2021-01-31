@@ -15,6 +15,7 @@ namespace Students.Api
   {
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddMvcCore(opt => opt.EnableEndpointRouting = false);
       services.AddHttpContextAccessor()
         .AddAutoMapper(Assembly.GetExecutingAssembly(), Assembly.GetAssembly(typeof(StudentsMappingProfile)))
         .AddMvcCore(opt => opt.EnableEndpointRouting = false)

@@ -6,25 +6,18 @@ namespace Students.Repository.Filters
 {
   public class DbStudentsFilterAdapter : IDbFilterAdapter<DbStudent>
   {
-    public IQueryable<DbStudent> FilterEqualsTo(IQueryable<DbStudent> dbStudents, Filter filter)
+    public IQueryable<DbStudent> FilterEqualsTo(IQueryable<DbStudent> values, Filter filter)
     {
-      switch (filter.Column)
+      values = filter.Column switch
       {
-        case nameof(DbStudent.Gender):
-          dbStudents = dbStudents.Where(s => s.Gender.ToString() == filter.Value);
-          break;
-        case nameof(DbStudent.FirstName):
-          dbStudents = dbStudents.Where(s => s.FirstName == filter.Value);
-          break;
-        case nameof(DbStudent.LastName):
-          dbStudents = dbStudents.Where(s => s.LastName == filter.Value);
-          break;
-        case nameof(DbStudent.Patronymic):
-          dbStudents = dbStudents.Where(s => s.Patronymic == filter.Value);
-          break;
-      }
+        nameof(DbStudent.Gender) => values.Where(s => s.Gender.ToString() == filter.Value),
+        nameof(DbStudent.FirstName) => values.Where(s => s.FirstName == filter.Value),
+        nameof(DbStudent.LastName) => values.Where(s => s.LastName == filter.Value),
+        nameof(DbStudent.Patronymic) => values.Where(s => s.Patronymic == filter.Value),
+        _ => values
+      };
 
-      return dbStudents;
+      return values;
     }
   }
 }

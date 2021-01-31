@@ -5,7 +5,7 @@ namespace Students.Repository.Entities
 {
   public class DbStudent
   {
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     public int Gender { get; set; }
 
@@ -22,6 +22,6 @@ namespace Students.Repository.Entities
     public string UId { get; set; }
 
 
-    public List<DbGroup> Groups { get; set; } = new List<DbGroup>();
+    public List<DbGroup> Group { get; set; } = new List<DbGroup>();
   }
 }

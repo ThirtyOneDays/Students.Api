@@ -20,6 +20,7 @@ namespace Students.Repository
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+      modelBuilder.Entity<DbStudent>().HasKey(s => s.Id);
       modelBuilder.Entity<DbStudent>().Property(s => s.Gender).IsRequired();
       modelBuilder.Entity<DbStudent>().Property(s => s.LastName).IsRequired();
       modelBuilder.Entity<DbStudent>().Property(s => s.FirstName).IsRequired();
@@ -27,6 +28,7 @@ namespace Students.Repository
       modelBuilder.Entity<DbStudent>().HasIndex(s => s.UId).IsUnique();
       modelBuilder.Entity<DbStudent>().Property(s => s.Gender).IsRequired();
 
+      modelBuilder.Entity<DbGroup>().HasKey(s => s.Id);
       modelBuilder.Entity<DbGroup>().Property(s => s.Name).IsRequired();
     }
   }
