@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Students.Api.Extensions;
 using Students.Api.Middlewares;
 using Students.Logic.Services.Students;
 
@@ -37,7 +38,9 @@ namespace Students.Api
         })
         .AddApiExplorer();
 
-      services.AddSwaggerGen();
+      services.AddCustomSwaggerGen();
+      services.AddCustomAuthorizations();
+      services.AddCustomJwtAuthentication(_configuration);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -54,6 +57,8 @@ namespace Students.Api
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Students Api V1");
       });
       app.UseRouting();
+      app.UseAuthentication();
+      app.UseAuthorization();
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapControllers();

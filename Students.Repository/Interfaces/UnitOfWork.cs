@@ -10,15 +10,18 @@ namespace Students.Repository.Interfaces
     private readonly ApplicationContext _context;
 
     public UnitOfWork(
-      ApplicationContext context, 
+      ApplicationContext context,
+      IGenericRepository<DbUser> userRepository,
       IGenericRepository<DbStudent> studentRepository,
-      IGenericRepository<DbGroup> groupRepository
-      )
+      IGenericRepository<DbGroup> groupRepository)
     {
       _context = context;
+      UserRepository = userRepository;
       StudentRepository = studentRepository;
       GroupRepository = groupRepository;
     }
+
+    public IGenericRepository<DbUser> UserRepository { get; }
 
     public IGenericRepository<DbStudent> StudentRepository { get; }
 

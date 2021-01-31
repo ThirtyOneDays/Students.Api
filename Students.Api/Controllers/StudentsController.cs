@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Students.Common.Models.UI;
 using Students.Logic.Models.Students;
@@ -19,7 +20,7 @@ namespace Students.Api.Controllers
     }
 
     [HttpPost]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> CreateStudent(CreateStudentRequest student)
     {
       await _studentsService.CreateStudentAsync(student);
@@ -27,7 +28,7 @@ namespace Students.Api.Controllers
     }
 
     [HttpPut]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> UpdateStudent(UpdateStudentRequest student)
     {
       await _studentsService.UpdateStudentAsync(student);
@@ -35,7 +36,7 @@ namespace Students.Api.Controllers
     }
 
     [HttpDelete]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> DeleteStudent(long studentId)
     {
       await _studentsService.DeleteStudentAsync(studentId);
@@ -43,7 +44,7 @@ namespace Students.Api.Controllers
     }
 
     [HttpGet]
-    //[Authorize]
+    [Authorize]
     [ProducesResponseType(typeof(StudentModel), 200)]
     public async Task<IActionResult> GetStudent(long studentId)
     {
@@ -52,7 +53,7 @@ namespace Students.Api.Controllers
     }
 
     [HttpPost("list")]
-    //[Authorize]
+    [Authorize]
     [ProducesResponseType(typeof(List<StudentModel>), 200)]
     public async Task<IActionResult> GetStudents(PagingModel pagingModel)
     {
@@ -61,7 +62,7 @@ namespace Students.Api.Controllers
     }
 
     [HttpPost("groups")]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> AddStudentToGroup(StudentGroupModel studentGroupModel)
     {
       await _studentsService.AddStudentToGroupAsync(studentGroupModel);

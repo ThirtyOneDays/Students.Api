@@ -1,7 +1,9 @@
 ﻿using Autofac;
 using Microsoft.Extensions.Configuration;
+using Students.Logic;
 using Students.Logic.Services.Groups;
 using Students.Logic.Services.Students;
+using Students.Logic.Services.Users;
 using Students.Repository;
 using Students.Repository.Entities;
 using Students.Repository.Filters;
@@ -34,12 +36,20 @@ namespace Students.Api
         .As(typeof(IDbFilter<>))
         .InstancePerLifetimeScope();
 
+      builder.RegisterType<DbUsersFilterAdapter>()
+        .As<IDbFilterAdapter<DbUser>>()
+        .InstancePerLifetimeScope();
+
       builder.RegisterType<DbStudentsFilterAdapter>()
         .As<IDbFilterAdapter<DbStudent>>()
         .InstancePerLifetimeScope();
 
       builder.RegisterType<DbGroupsFilterAdapter>()
         .As<IDbFilterAdapter<DbGroup>>()
+        .InstancePerLifetimeScope();
+
+      builder.RegisterType<UsersService>()
+        .As<IUsersService>()
         .InstancePerLifetimeScope();
 
       builder.RegisterType<StudentsService>()
@@ -52,6 +62,10 @@ namespace Students.Api
 
       builder.RegisterType<UnitOfWork>()
         .As<IUnitOfWork>()
+        .InstancePerLifetimeScope();
+
+      builder.RegisterType<PasswordHasher>()
+        .As<IPasswordHasher>()
         .InstancePerLifetimeScope();
 
       builder.RegisterType<ApplicationContext>().AsSelf();

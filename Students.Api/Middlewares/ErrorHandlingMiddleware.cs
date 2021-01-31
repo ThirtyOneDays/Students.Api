@@ -39,9 +39,9 @@ namespace Students.Api.Middlewares
         case InvalidArgumentException _:
           statusCode = (int)HttpStatusCode.BadRequest;
           break;
-        //case UnathorizedException _:
-        //  statusCode = (int)HttpStatusCode.Unauthorized;
-        //  break;
+        case DuplicateGroupNameException _:
+          statusCode = (int)HttpStatusCode.BadRequest;
+          break;
         default:
           statusCode = (int)HttpStatusCode.InternalServerError;
           break;

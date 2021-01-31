@@ -23,6 +23,9 @@ namespace Students.Repository
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+      modelBuilder.Entity<DbUser>().HasKey(s => s.Id);
+      modelBuilder.Entity<DbUser>().HasIndex(s => s.UserName).IsUnique();
+
       modelBuilder.Entity<DbStudent>().HasKey(s => s.Id);
       modelBuilder.Entity<DbStudent>().Property(s => s.Gender).IsRequired();
       modelBuilder.Entity<DbStudent>().Property(s => s.LastName).IsRequired();

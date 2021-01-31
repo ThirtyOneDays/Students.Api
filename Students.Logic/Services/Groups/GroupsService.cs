@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +28,15 @@ namespace Students.Logic.Services.Groups
         throw new InvalidArgumentException("Create group request model cannot be empty.");
 
       var dbGroup = _mapper.Map<DbGroup>(createGroupRequest);
-      await _unitOfWork.GroupRepository.CreateAsync(dbGroup);
+
+      try
+      {
+        await _unitOfWork.GroupRepository.CreateAsync(dbGroup);
+      }
+      catch (Exception)
+      {
+        throw new DuplicateGroupNameException();
+      }
     }
 
     public async Task DeleteGroupAsync(long groupId)

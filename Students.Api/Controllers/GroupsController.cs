@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Students.Common.Models.UI;
 using Students.Logic.Models.Groups;
@@ -19,7 +20,7 @@ namespace Students.Api.Controllers
     }
 
     [HttpPost]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> CreateGroup(CreateGroupRequest groupRequest)
     {
       await _groupsService.CreateGroupAsync(groupRequest);
@@ -27,7 +28,7 @@ namespace Students.Api.Controllers
     }
 
     [HttpPut]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> UpdateGroup(UpdateGroupRequest updateGroupRequest)
     {
       await _groupsService.UpdateGroupAsync(updateGroupRequest);
@@ -35,7 +36,7 @@ namespace Students.Api.Controllers
     }
 
     [HttpDelete]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> DeleteGroup(long groupId)
     {
       await _groupsService.DeleteGroupAsync(groupId);
@@ -43,7 +44,7 @@ namespace Students.Api.Controllers
     }
 
     [HttpGet]
-    //[Authorize]
+    [Authorize]
     [ProducesResponseType(typeof(GroupModel), 200)]
     public async Task<IActionResult> GetGroup(long groupId)
     {
@@ -52,13 +53,12 @@ namespace Students.Api.Controllers
     }
 
     [HttpPost("list")]
-    //[Authorize]
+    [Authorize]
     [ProducesResponseType(typeof(List<GroupModel>), 200)]
     public async Task<IActionResult> GetGroups(PagingModel pagingModel)
     {
       var groups = await _groupsService.GetGroupsAsync(pagingModel);
       return Ok(groups);
     }
-
   }
 }
