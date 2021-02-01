@@ -42,6 +42,9 @@ namespace Students.Api.Middlewares
         case DuplicateGroupNameException _:
           statusCode = (int)HttpStatusCode.BadRequest;
           break;
+        case InvalidOperationException _:
+          statusCode = (int)HttpStatusCode.BadRequest;
+          break;
         default:
           statusCode = (int)HttpStatusCode.InternalServerError;
           break;

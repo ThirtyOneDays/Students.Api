@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 using Students.Api.Infrastructure.Security.Auth;
 using Students.Logic.Models.Users;
 using Students.Logic.Services.Users;
@@ -64,6 +66,32 @@ namespace Students.Api.Controllers
       _jwtAuthManager.RemoveRefreshTokenByUserId(userId);
 
       return NoContent();
+    }
+
+    [HttpPost("refresh-token")]
+    [AllowAnonymous]
+    public IActionResult RefreshToken(RefreshTokenRequest request)
+    {
+      try
+      {
+        if (string.IsNullOrWhiteSpace(request.RefreshToken))
+        {
+          return Unauthorized();
+        }
+
+        var accessToken = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+        var jwtResult = _jwtAuthManager.Refresh(request.RefreshToken, accessToken, DateTime.Now);
+
+        return Ok(new RefreshTokenResponse()
+        {
+          AccessToken = jwtResult.AccessToken,
+          RefreshToken = jwtResult.RefreshToken.TokenString
+        });
+      }
+      catch (SecurityTokenException e)
+      {
+        return Unauthorized(e.Message);
+      }
     }
   }
 }

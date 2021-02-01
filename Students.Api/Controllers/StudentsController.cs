@@ -70,7 +70,7 @@ namespace Students.Api.Controllers
     }
 
     [HttpDelete("groups")]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> RemoveStudentFromGroup(StudentGroupModel studentGroupModel)
     {
       await _studentsService.RemoveStudentFromGroupAsync(studentGroupModel);

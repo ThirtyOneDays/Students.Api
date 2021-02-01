@@ -29,7 +29,7 @@ namespace Students.Logic.Services.Users
         await _unitOfWork.UserRepository.CreateAsync(dbUser);
         return _mapper.Map<LoginResponse>(dbUser);
       }
-      catch (Exception)//TODO: catch sql exception
+      catch (Exception)
       {
         return null;
       }

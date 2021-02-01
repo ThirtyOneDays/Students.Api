@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -64,12 +62,6 @@ namespace Students.Api.Extensions
     {
       services.AddSwaggerGen(options =>
       {
-        //options.DescribeAllParametersInCamelCase();
-        //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-        //options.IncludeXmlComments(xmlPath);
-        //options.EnableAnnotations();
-
         var securityScheme = new OpenApiSecurityScheme
         {
           Reference = new OpenApiReference
@@ -92,6 +84,7 @@ namespace Students.Api.Extensions
             {securityScheme, Array.Empty<string>()}
         });
       });
+
       return services;
     }
   }

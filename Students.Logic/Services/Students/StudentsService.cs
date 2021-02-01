@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -80,7 +81,7 @@ namespace Students.Logic.Services.Students
 
       var existingStudentGroup = dbStudent.Group.FirstOrDefault(x => x.Id == studentGroupModel.GroupId);
       if (existingStudentGroup != null)
-        throw new InvalidArgumentException("Student is already in this group."); ;
+        throw new InvalidOperationException("Student is already in this group."); ;
 
       var dbGroup = await _unitOfWork.GroupRepository.FindByIdAsync(studentGroupModel.GroupId);
       if (dbGroup == null)
